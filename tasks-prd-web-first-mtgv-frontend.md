@@ -1,8 +1,27 @@
 # Task List: Web-First MTGV Frontend
 
-## Relevant Files
+## Design Pattern: Real-Time Package State Management
 
-- `mtgv-web/package.json` - Main package configuration with Next.js dependencies
+### Architecture Overview
+- **Backend as Source of Truth**: All persistent package state managed by API
+- **WebSocket Real-Time Sync**: Frontend connects via WebSocket for immediate updates
+- **REST API for Initial Load**: Page reloads restore state from REST endpoints
+- **Debounced Updates**: Prevent excessive WebSocket traffic during rapid changes
+
+### State Flow
+1. User creates/modifies card list → WebSocket syncs to backend
+2. User selects card versions → WebSocket syncs selections to backend  
+3. User exports → REST API call (doesn't finalize package)
+4. Page reload → REST API loads current state, WebSocket reconnects
+
+### WebSocket Events
+- `join-package`: Client joins package room for real-time updates
+- `update-card-list`: Sync card list changes to backend
+- `update-version-selection`: Sync version selection changes to backend
+- `card-list-updated`: Broadcast card list changes to all clients
+- `version-selection-updated`: Broadcast version selection changes to all clients
+
+## Relevant Files
 - `mtgv-web/next.config.js` - Next.js configuration for image optimization and API routes
 - `mtgv-web/tsconfig.json` - TypeScript configuration
 - `mtgv-web/tailwind.config.js` - Tailwind CSS configuration for responsive design
@@ -33,6 +52,7 @@
 - `mtgv-web/.prettierrc.js` - Prettier configuration
 - `mtgv-web/public/manifest.json` - PWA manifest for mobile functionality
 - `mtgv-web/public/sw.js` - Service worker for caching and offline support
+- `mtgv-api/src/middleware/validateParams.js` - Middleware for validating API request parameters (now enforces 100-card limit in card list validation)
 
 ### Notes
 
@@ -53,27 +73,62 @@
   - [x] 1.7 Set up ESLint and Prettier for code quality
   - [x] 1.8 Configure Tailwind CSS for responsive design
 
-- [ ] 2.0 Card Input Interface Implementation
-  - [ ] 2.1 Create CardInput component with text input field
-  - [ ] 2.2 Implement card quantity input functionality (default: 1)
-  - [ ] 2.3 Create useCardAutocomplete hook for card name suggestions
-  - [ ] 2.4 Integrate autocomplete with MTGV API's MongoDB card database
-  - [ ] 2.5 Add card list management (add/remove cards from input list)
-  - [ ] 2.6 Implement input validation for card names and quantities
-  - [ ] 2.7 Add 100-card limit enforcement and validation
-  - [ ] 2.8 Add loading states and error handling for autocomplete
-  - [ ] 2.9 Create unit tests for CardInput component and autocomplete hook
+- [x] 2.0 Card Input Interface Implementation
+  - [x] 2.1 Create CardInput component with text input field
+  - [x] 2.2 Implement card quantity input functionality (default: 1)
+  - [x] 2.3 Create useCardAutocomplete hook for card name suggestions
+  - [x] 2.4 Integrate autocomplete with MTGV API's MongoDB card database
+  - [x] 2.5 Add card list management (add/remove cards from input list)
+  - [x] 2.6 Implement input validation for card names and quantities
+  - [x] 2.7 Centralize card name sanitization & combine it with input validation
+  - [x] 2.8 Add 100-card limit enforcement and validation
+  - [x] 2.9 Add loading states and error handling for autocomplete
+  - [x] 2.10 Create unit tests for CardInput component and autocomplete hook
 
-- [ ] 3.0 API Integration and Card Package Creation
-  - [ ] 3.1 Create API service layer with axios configuration
-  - [ ] 3.2 Implement API proxy route for MTGV API calls
-  - [ ] 3.3 Implement `/card_package` POST endpoint integration
-  - [ ] 3.4 Add game type selection (paper, mtgo, arena) with paper default
-  - [ ] 3.5 Add default selection preferences (oldest, newest, most_expensive, least_expensive)
-  - [ ] 3.6 Create useCardPackage hook for managing card package state
-  - [ ] 3.7 Implement API error handling and validation error display
-  - [ ] 3.8 Add loading states during API calls
-  - [ ] 3.9 Create unit tests for API service and card package hook
+- [x] 2.1 Caching Behavior Refactoring
+  - [x] 2.1.1 Analyze current caching behavior across the application
+  - [x] 2.1.2 Refactor Card model to centralize all card querying by name
+  - [x] 2.1.3 Implement unified caching strategy for card lookups
+  - [x] 2.1.4 Add caching for autocomplete card lookup functionality
+  - [x] 2.1.5 Remove redundant caching implementations
+  - [x] 2.1.6 Optimize cache invalidation and TTL strategies
+  - [x] 2.1.7 Add cache monitoring and performance metrics
+  - [x] 2.1.8 Create unit tests for new caching behavior
+  - [x] 2.1.9 Update documentation for caching architecture
+
+- [x] 2.2 Game Selection Simplification
+  - [x] 2.2.1 Update API to accept single game type instead of array
+  - [x] 2.2.2 Modify CardPackageCreator to handle single game parameter
+  - [x] 2.2.3 Update Card model queries to use single game filter
+  - [x] 2.2.4 Create GameSelector component with toggle between paper/mtgo/arena
+  - [x] 2.2.5 Set paper as default game type
+  - [x] 2.2.6 Update API validation to enforce single game selection
+  - [x] 2.2.7 Update package cache keys to use single game
+  - [x] 2.2.8 Update tests to reflect single game selection
+  - [x] 2.2.9 Update documentation for simplified game selection
+
+- [x] 3.0 API Integration and Card Package Creation
+  - [x] 3.1 Create API service layer with axios configuration
+  - [x] 3.2 Implement API proxy route for MTGV API calls
+    - [x] 3.2.1 Implement API proxy route for card package route
+    - [x] 3.2.2 Implement API proxy route for random card package route
+    - [x] 3.2.3 Implement API proxy route for card package export route
+  - [x] 3.3 Implement `/card_package` POST endpoint integration
+  - [x] 3.4 Add game type selection (paper, mtgo, arena) with paper default
+  - [x] 3.5 Add default selection preferences (oldest, newest, most_expensive, least_expensive)
+  - [x] 3.6 Create useCardPackage hook for managing card package state
+  - [x] 3.6.1 Implement WebSocket-based real-time package state management
+  - [x] 3.6.2 Add backend WebSocket server for package updates
+  - [x] 3.6.3 Create package session management (join/leave package rooms)
+  - [x] 3.6.4 Implement real-time card list updates via WebSocket
+  - [x] 3.6.5 Implement real-time version selection updates via WebSocket
+  - [x] 3.6.6 Add debounced updates to prevent excessive WebSocket traffic
+  - [x] 3.6.7 Handle WebSocket reconnection and state recovery
+  - [x] 3.6.8 Ensure package state persists across page reloads
+  - [x] 3.6.9 Create unit tests for WebSocket package management
+  - [x] 3.7 Implement API error handling and validation error display
+  - [x] 3.8 Add loading states during API calls
+  - [x] 3.9 Create unit tests for API service and card package hook
 
 - [ ] 4.0 Card Display Interface and Version Selection
   - [ ] 4.1 Create CardDisplay component for showing card package results
@@ -132,4 +187,11 @@
   - [ ] 9.5 Test responsive design and mobile functionality
   - [ ] 9.6 Test image caching and loading performance
   - [ ] 9.7 Create integration tests for complete user flows
-  - [ ] 9.8 Set up monitoring and error tracking 
+  - [ ] 9.8 Set up monitoring and error tracking
+  - [ ] 9.9 **Problem test areas to resolve before MVP launch:**
+    - [ ] useCardAutocomplete cache test: Ensure cache hits update suggestions state synchronously and reliably in tests (currently stubbed/skipped)
+    - [ ] useCardAutocomplete maxResults test: Ensure client-side limiting is tested reliably (currently stubbed/skipped)
+
+  - [ ] 10.0 Miscellaneous Cleanups
+   - [ ] Remove frontend cache monitoring // move it to a better location - admin page with oauth?
+   - [ ] card sorting not working properly - especially most & least expensive
