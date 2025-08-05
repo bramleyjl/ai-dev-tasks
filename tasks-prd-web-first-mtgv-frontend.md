@@ -29,8 +29,8 @@
 - `mtgv-web/src/app/page.tsx` - Main page component
 - `mtgv-web/src/components/CardInput.tsx` - Card input interface with autocomplete
 - `mtgv-web/src/components/CardInput.test.tsx` - Unit tests for CardInput component
-- `mtgv-web/src/components/CardDisplay.tsx` - Card display interface with version selection
-- `mtgv-web/src/components/CardDisplay.test.tsx` - Unit tests for CardDisplay component
+- `mtgv-web/src/components/CardList.tsx` - Card display interface with version selection (serves as CardDisplay)
+- `mtgv-web/src/components/CardList.test.tsx` - Unit tests for CardList component
 - `mtgv-web/src/components/CardVersion.tsx` - Individual card version display component
 - `mtgv-web/src/components/CardVersion.test.tsx` - Unit tests for CardVersion component
 - `mtgv-web/src/lib/api.ts` - API service layer for MTGV API integration
@@ -47,6 +47,7 @@
 - `mtgv-web/src/constants/config.ts` - Configuration constants (API URLs, etc.)
 - `mtgv-web/src/app/api/proxy/route.ts` - API proxy route for MTGV API calls
 - `mtgv-web/src/app/api/proxy/route.test.ts` - Unit tests for API proxy
+- `mtgv-web/src/app/api/card_packages/export/route.ts` - Export API route for card packages
 - `mtgv-web/jest.config.js` - Jest testing configuration
 - `mtgv-web/.eslintrc.js` - ESLint configuration
 - `mtgv-web/.prettierrc.js` - Prettier configuration
@@ -130,42 +131,53 @@
   - [x] 3.8 Add loading states during API calls
   - [x] 3.9 Create unit tests for API service and card package hook
 
-- [ ] 4.0 Card Display Interface and Version Selection
-  - [ ] 4.1 Create CardDisplay component for showing card package results
-  - [ ] 4.2 Create CardVersion component for individual card version display
-  - [ ] 4.3 Implement card image loading from Scryfall with fallback handling
-  - [ ] 4.4 Add card version selection functionality (radio buttons or similar)
-  - [ ] 4.5 Display card prices and metadata for each version
-  - [ ] 4.6 Handle both black-bordered and white-bordered card images appropriately
-  - [ ] 4.7 Implement smooth scrolling for large card lists
-  - [ ] 4.8 Add visual feedback for selected card versions
-  - [ ] 4.9 Create unit tests for CardDisplay and CardVersion components
+- [x] 3.5 Caching and State Persistence Issues
+  - [x] 3.5.1 Fix API Redis caching for card package data
+  - [x] 3.5.2 Fix frontend caching for user selections and package state
+  - [x] 3.5.3 Implement proper state persistence across page reloads
+  - [x] 3.5.4 Fix user selection reloading issues
+  - [x] 3.5.5 Add proper cache invalidation strategies
+  - [x] 3.5.6 Test caching behavior with multiple users
+  - [x] 3.5.7 Create unit tests for caching functionality
 
-- [ ] 5.0 Export Functionality Implementation
-  - [ ] 5.1 Implement `/card_package/export` POST endpoint integration
-  - [ ] 5.2 Add TCGPlayer export format with direct URL forwarding
-  - [ ] 5.3 Add text export format with copy-to-clipboard functionality
-  - [ ] 5.4 Create export buttons and UI for both export types
-  - [ ] 5.5 Handle browser clipboard operations for text export
-  - [ ] 5.6 Add export success/error feedback to users
-  - [ ] 5.7 Implement export data validation before API calls
-  - [ ] 5.8 Create unit tests for export functionality
+- [x] 4.0 Card Display Interface and Version Selection
+  - [x] 4.1 Create CardDisplay component for showing card package results
+  - [x] 4.2 Create CardVersion component for individual card version display
+  - [x] 4.3 Implement card image loading from Scryfall with fallback handling
+  - [x] 4.4 Add card version selection functionality (radio buttons or similar)
+  - [x] 4.5 Display card prices and metadata for each version
+  - [x] 4.6 Handle both black-bordered and white-bordered card images appropriately
+  - [x] 4.7 Implement smooth scrolling for large card lists
+  - [x] 4.8 Add visual feedback for selected card versions
+  - [x] 4.9 Create unit tests for CardDisplay and CardVersion components
 
-- [ ] 6.0 Random Package Generation Feature
-  - [ ] 6.1 Implement `/card_package/random` GET endpoint integration
-  - [ ] 6.2 Add random package count input interface
-  - [ ] 6.3 Create random package generation button and UI
-  - [ ] 6.4 Handle random package responses identically to created packages
-  - [ ] 6.5 Add loading states for random package generation
-  - [ ] 6.6 Integrate random package with existing card display interface
-  - [ ] 6.7 Create unit tests for random package functionality
+- [x] 5.0 Export Functionality Implementation
+  - [x] 5.1 Implement `/card_package/export` POST endpoint integration
+  - [x] 5.2 Add TCGPlayer export format with direct URL forwarding
+  - [x] 5.3 Add text export format with copy-to-clipboard functionality
+  - [x] 5.4 Create export buttons and UI for both export types
+  - [x] 5.5 Handle browser clipboard operations for text export
+  - [x] 5.6 Add export success/error feedback to users
+  - [x] 5.7 Implement export data validation before API calls
+  - [x] 5.8 Create unit tests for export functionality
 
-- [ ] 7.0 Responsive Design and Mobile Optimization
-  - [ ] 7.1 Implement responsive layout for desktop, tablet, and mobile
-  - [ ] 7.2 Add touch-friendly interactions for mobile devices
-  - [ ] 7.3 Optimize card grid layout for different screen sizes
-  - [ ] 7.4 Implement mobile-friendly navigation and UI patterns
-  - [ ] 7.5 Add responsive typography and spacing
+- [~~6.0~~] Random Package Generation Feature (SKIPPED - Not needed for MVP)
+  - [~~6.1~~] Implement `/card_package/random` GET endpoint integration
+  - [~~6.2~~] Add random package count input interface
+  - [~~6.3~~] Create random package generation button and UI
+  - [~~6.4~~] Handle random package responses identically to created packages
+  - [~~6.5~~] Add loading states for random package generation
+  - [~~6.6~~] Integrate random package with existing card display interface
+  - [~~6.7~~] Create unit tests for random package functionality
+
+- [x] 7.0 Responsive Design and Mobile Optimization
+  - [x] 7.1 Implement responsive layout for desktop, tablet, and mobile
+  - [x] 7.2 Add touch-friendly interactions for mobile devices
+  - [x] 7.3 Optimize card grid layout for different screen sizes
+  - [x] 7.4 Implement mobile-friendly navigation and UI patterns
+  - [x] 7.5 Add responsive typography and spacing
+  - [ ] 7.5.1 organize CSS into named classes for centralized control & easier manual management
+  - [ ] 7.5.2 compare mtgv-web styling to other popular MTG apps and update to a more compelling color theme suite
   - [ ] 7.6 Test responsive design across different devices and browsers
   - [ ] 7.7 Create unit tests for responsive components
 
@@ -192,6 +204,84 @@
     - [ ] useCardAutocomplete cache test: Ensure cache hits update suggestions state synchronously and reliably in tests (currently stubbed/skipped)
     - [ ] useCardAutocomplete maxResults test: Ensure client-side limiting is tested reliably (currently stubbed/skipped)
 
-  - [ ] 10.0 Miscellaneous Cleanups
-   - [ ] Remove frontend cache monitoring // move it to a better location - admin page with oauth?
-   - [ ] card sorting not working properly - especially most & least expensive
+- [ ] 10.0 Post-MVP Improvements and Cleanup
+  - [ ] 10.1 Remove frontend cache monitoring (move to admin page with OAuth)
+  - [ ] 10.2 Fix card sorting issues (especially most & least expensive)
+  - [ ] 10.3 Document current caching behavior and state flow
+  - [ ] 10.4 Plan handling of complex interactions between card list and package state
+  - [ ] 10.5 Address corner cases in state synchronization
+  - [ ] 10.6 Design robust error handling for state conflicts
+  - [ ] 10.7 Create comprehensive testing strategy for state management
+  - [ ] 10.8 **Data Structure Standardization Analysis**
+    - [ ] 10.8.1 Analyze MTGJSON data structures and compare with current MTGV data models
+    - [ ] 10.8.2 Examine Magic: The Gathering JS SDK patterns and conventions
+    - [ ] 10.8.3 Identify opportunities to align with community standards
+    - [ ] 10.8.4 Evaluate potential benefits of adopting standardized field names and structures
+    - [ ] 10.8.5 Assess compatibility with popular MTG tools and libraries
+    - [ ] 10.8.6 Create migration plan for any structural changes
+    - [ ] 10.8.7 Document findings and recommendations for future development
+  - [ ] 10.9 **Random Card Functionality Evaluation**
+    - [ ] 10.9.1 Evaluate user demand for random card generation feature
+    - [ ] 10.9.2 Research potential use cases (deck building inspiration, testing, etc.)
+    - [ ] 10.9.3 Assess technical complexity and maintenance burden
+    - [ ] 10.9.4 Consider alternative approaches (curated lists, themed packages, etc.)
+    - [ ] 10.9.5 Decide whether to expand into full feature or remove backend code
+    - [ ] 10.9.6 If removing: create separate branch to preserve functionality
+    - [ ] 10.9.7 If expanding: design comprehensive random card generation system
+    - [ ] 10.9.8 Document decision and rationale for future reference
+
+- [ ] 11.0 Enhanced Card List Generation and Import Features
+  - [ ] 11.1 **Copy + Paste Card List Functionality**
+    - [ ] 11.1.1 Add "Copy Card List" button to CardList component
+    - [ ] 11.1.2 Implement formatted card list generation (e.g., "4x Lightning Bolt")
+    - [ ] 11.1.3 Add clipboard copy functionality with success/error feedback
+    - [ ] 11.1.4 Support multiple formats (simple list, with set info, with prices)
+    - [ ] 11.1.5 Add "Paste Card List" functionality for bulk import
+    - [ ] 11.1.6 Parse common deck list formats (Arena, MTGO, plain text)
+    - [ ] 11.1.7 Handle edge cases (invalid card names, quantities, formatting)
+    - [ ] 11.1.8 Create unit tests for copy/paste functionality
+  - [ ] 11.2 **Import URL Generation for Popular Deckbuilding Websites**
+    - [ ] 11.2.1 Research and implement TCGPlayer mass entry URL generation
+    - [ ] 11.2.2 Add Moxfield deck import URL generation
+    - [ ] 11.2.3 Add Archidekt deck import URL generation
+    - [ ] 11.2.4 Add Deckstats.net import URL generation
+    - [ ] 11.2.5 Add MTGGoldfish deck import URL generation
+    - [ ] 11.2.6 Create unified import URL service with extensible architecture
+    - [ ] 11.2.7 Add "Generate Import Links" button with dropdown menu
+    - [ ] 11.2.8 Handle different URL formats and API requirements for each site
+    - [ ] 11.2.9 Create unit tests for import URL generation
+  - [ ] 11.3 **Random EDH Deck Populator**
+    - [ ] 11.3.1 Research EDHrec API for popular deck lists
+    - [ ] 11.3.2 Implement EDHrec deck fetching service
+    - [ ] 11.3.3 Add "Random EDH Deck" button to CardInput component
+    - [ ] 11.3.4 Support filtering by commander, theme, or popularity
+    - [ ] 11.3.5 Add deck preview with commander and deck name
+    - [ ] 11.3.6 Implement fallback to other EDH deck repositories
+    - [ ] 11.3.7 Add deck metadata display (commander, theme, budget)
+    - [ ] 11.3.8 Handle rate limiting and API quotas for external services
+    - [ ] 11.3.9 Create unit tests for EDH deck fetching
+  - [ ] 11.4 **Enhanced User Experience Features**
+    - [ ] 11.4.1 Add deck list templates (Standard, Modern, Pioneer, etc.)
+    - [ ] 11.4.2 Implement "Save Deck List" functionality with localStorage
+    - [ ] 11.4.3 Add "Load Saved Deck" dropdown with deck names
+    - [ ] 11.4.4 Create deck list sharing via URL parameters
+    - [ ] 11.4.5 Add deck list export in multiple formats (JSON, CSV, plain text)
+    - [ ] 11.4.6 Implement deck list validation and error correction
+    - [ ] 11.4.7 Add bulk card search and add functionality
+    - [ ] 11.4.8 Create comprehensive error handling for all import/export features
+  - [ ] 11.5 **API and Backend Enhancements**
+    - [ ] 11.5.1 Extend backend API to support deck list import/export
+    - [ ] 11.5.2 Add deck list caching and optimization
+    - [ ] 11.5.3 Implement rate limiting for external API calls
+    - [ ] 11.5.4 Add deck list validation middleware
+    - [ ] 11.5.5 Create deck list transformation services
+    - [ ] 11.5.6 Add comprehensive logging for import/export operations
+    - [ ] 11.5.7 Create unit tests for new backend functionality
+  - [ ] 11.6 **Documentation and Testing**
+    - [ ] 11.6.1 Document supported deck list formats and import/export features
+    - [ ] 11.6.2 Create user guide for copy/paste functionality
+    - [ ] 11.6.3 Document API endpoints for deck list operations
+    - [ ] 11.6.4 Create integration tests for end-to-end deck list workflows
+    - [ ] 11.6.5 Add performance testing for large deck lists
+    - [ ] 11.6.6 Create accessibility testing for new UI components
+    - [ ] 11.6.7 Document error handling and troubleshooting guides
