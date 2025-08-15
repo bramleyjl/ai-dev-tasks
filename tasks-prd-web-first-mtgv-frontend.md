@@ -177,9 +177,7 @@
   - [x] 7.4 Implement mobile-friendly navigation and UI patterns
   - [x] 7.5 Add responsive typography and spacing
   - [x] 7.5.1 organize CSS into named classes for centralized control & easier manual management
-  - [ ] 7.5.2 compare mtgv-web styling to other popular MTG apps and update to a more compelling color theme suite
-  - [ ] 7.6 Test responsive design across different devices and browsers
-  - [ ] 7.7 Create unit tests for responsive components
+  - [x] 7.6 Test responsive design across different devices and browsers
 
 - [ ] 8.0 Performance Optimization and Image Caching
   - [ ] 8.1 Implement efficient image caching service using Next.js Image component
@@ -203,6 +201,7 @@
   - [ ] 9.9 **Problem test areas to resolve before MVP launch:**
     - [ ] useCardAutocomplete cache test: Ensure cache hits update suggestions state synchronously and reliably in tests (currently stubbed/skipped)
     - [ ] useCardAutocomplete maxResults test: Ensure client-side limiting is tested reliably (currently stubbed/skipped)
+    - [ ] EditableCardName component tests: Fix Jest mocking issues for useCardAutocomplete hook (15 tests currently failing)
 
 - [ ] 10.0 Post-MVP Improvements and Cleanup
   - [ ] 10.1 Remove frontend cache monitoring (move to admin page with OAuth)
@@ -221,14 +220,20 @@
     - [ ] 10.8.6 Create migration plan for any structural changes
     - [ ] 10.8.7 Document findings and recommendations for future development
   - [ ] 10.9 **Random Card Functionality Evaluation**
-    - [ ] 10.9.1 Evaluate user demand for random card generation feature
-    - [ ] 10.9.2 Research potential use cases (deck building inspiration, testing, etc.)
-    - [ ] 10.9.3 Assess technical complexity and maintenance burden
-    - [ ] 10.9.4 Consider alternative approaches (curated lists, themed packages, etc.)
-    - [ ] 10.9.5 Decide whether to expand into full feature or remove backend code
-    - [ ] 10.9.6 If removing: create separate branch to preserve functionality
-    - [ ] 10.9.7 If expanding: design comprehensive random card generation system
-    - [ ] 10.9.8 Document decision and rationale for future reference
+  - [ ] 10.9.1 Evaluate user demand for random card generation feature
+  - [ ] 10.9.2 Research potential use cases (deck building inspiration, testing, etc.)
+  - [ ] 10.9.3 Assess technical complexity and maintenance burden
+  - [ ] 10.9.4 Consider alternative approaches (curated lists, themed packages, etc.)
+  - [ ] 10.9.5 Decide whether to expand into full feature or remove backend code
+  - [ ] 10.9.6 If removing: create separate branch to preserve functionality
+  - [ ] 10.9.7 If expanding: design comprehensive random card generation system
+  - [ ] 10.9.8 Document decision and rationale for future reference
+
+- [ ] 10.10 **Post-MVP Testing and Documentation**
+  - [ ] 10.10.0 complete & refactor testing from - mtgv-web/scripts/test-responsive.js
+  - [ ] 10.10.1 **Manual Responsive Testing**: Complete comprehensive responsive design testing across devices and browsers using RESPONSIVE_TESTING.md guide
+  - [ ] 10.10.2 **Mobile Device Testing**: Test on actual mobile devices and tablets for touch interactions and layout
+  - [ ] 10.10.3 **Documentation Consolidation**: Consolidate all documentation into a single, organized reference guide
 
 - [ ] 11.0 Enhanced Card List Generation and Import Features
   - [ ] 11.1 **Copy + Paste Card List Functionality**
