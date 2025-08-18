@@ -183,11 +183,19 @@
   - [x] 8.1 Implement efficient image caching service using Next.js Image component
   - [x] 8.2 Configure image optimization and lazy loading
   - [x] 8.3 Add image preloading for better user experience
-  - [ ] 8.4 Implement virtual scrolling for large card lists
+  - [x] 8.4 Implement virtual scrolling for large card lists
   - [x] 8.5 Optimize image loading to reduce load on Scryfall
-  - [ ] 8.6 Add image loading placeholders and error states
+  - [x] 8.6 Add image loading placeholders and error states
   - [x] 8.7 Monitor and optimize memory usage for large image lists
   - [x] 8.8 Create unit tests for image caching service
+
+- [x] 8.5 **Card List Refactoring and Bulk Import**
+  - [x] 8.5.1 Refactor CardList to always be visible (even when empty)
+  - [x] 8.5.2 Add tabbed interface with 3 tabs: Manual Entry, Free Text Input, Import URL
+  - [x] 8.5.3 Implement Free Text tab with deck list parsing and validation
+- [x] 8.5.4 Add copy deck list functionality with multiple format options
+- [x] 8.5.5 Stub Import URL tab for future implementation
+- [x] 8.5.6 Create unit tests for new tabbed interface and free text functionality
 
 - [ ] 9.0 Deployment and Testing
   - [ ] 9.1 Configure deployment for Render hosting platform
@@ -237,16 +245,18 @@
     - [ ] 10.10.3.1 frontend documentation consolidated
     - [ ] 10.10.3.2 backend documentation consolidated
 
+- [ ] 10.11 **Comprehensive Logging, Monitoring, and Metrics Collection**
+  - [ ] 10.11.1 **Real Memory Usage Monitoring**: Implement browser performance.memory API integration for accurate heap usage tracking
+  - [ ] 10.11.2 **Performance Metrics Collection**: Add render performance, component lifecycle, and API response time tracking
+  - [ ] 10.11.3 **Error Tracking and Reporting**: Implement centralized error logging with crash reporting and error aggregation
+  - [ ] 10.11.4 **User Analytics**: Track usage patterns, performance bottlenecks, and user experience metrics
+  - [ ] 10.11.5 **Application Performance Monitoring (APM)**: Integrate with tools like Sentry, LogRocket, or custom APM solution
+  - [ ] 10.11.6 **Real-time Dashboard**: Create admin dashboard for monitoring application health, performance, and user metrics
+  - [ ] 10.11.7 **Alerting System**: Set up automated alerts for performance degradation, error spikes, and memory issues
+  - [ ] 10.11.8 **Data Retention and Privacy**: Implement GDPR-compliant data retention policies and user privacy controls
+  - [ ] 10.11.9 **Performance Budgets**: Establish and enforce performance budgets for core web vitals and user experience metrics
+
 - [ ] 11.0 Enhanced Card List Generation and Import Features
-  - [ ] 11.1 **Copy + Paste Card List Functionality**
-    - [ ] 11.1.1 Add "Copy Card List" button to CardList component
-    - [ ] 11.1.2 Implement formatted card list generation (e.g., "4x Lightning Bolt")
-    - [ ] 11.1.3 Add clipboard copy functionality with success/error feedback
-    - [ ] 11.1.4 Support multiple formats (simple list, with set info, with prices)
-    - [ ] 11.1.5 Add "Paste Card List" functionality for bulk import
-    - [ ] 11.1.6 Parse common deck list formats (Arena, MTGO, plain text)
-    - [ ] 11.1.7 Handle edge cases (invalid card names, quantities, formatting)
-    - [ ] 11.1.8 Create unit tests for copy/paste functionality
   - [ ] 11.2 **Import URL Generation for Popular Deckbuilding Websites**
     - [ ] 11.2.1 Research and implement TCGPlayer mass entry URL generation
     - [ ] 11.2.2 Add Moxfield deck import URL generation
