@@ -197,19 +197,24 @@
 - [x] 8.5.5 Stub Import URL tab for future implementation
 - [x] 8.5.6 Create unit tests for new tabbed interface and free text functionality
 
-- [ ] 9.0 Deployment and Testing
-  - [ ] 9.1 Configure deployment for Render hosting platform
-  - [ ] 9.2 Set up environment variables and configuration
-  - [ ] 9.3 Test app functionality in production environment
-  - [ ] 9.4 Verify API integration and proxy functionality
-  - [ ] 9.5 Test responsive design and mobile functionality
-  - [ ] 9.6 Test image caching and loading performance
-  - [ ] 9.7 Create integration tests for complete user flows
-  - [ ] 9.8 Set up monitoring and error tracking
-  - [ ] 9.9 **Problem test areas to resolve before MVP launch:**
-    - [ ] useCardAutocomplete cache test: Ensure cache hits update suggestions state synchronously and reliably in tests (currently stubbed/skipped)
-    - [ ] useCardAutocomplete maxResults test: Ensure client-side limiting is tested reliably (currently stubbed/skipped)
-    - [ ] EditableCardName component tests: Fix Jest mocking issues for useCardAutocomplete hook (15 tests currently failing)
+- [x] 9.0 **Staging Environment Deployment and Optimization** ✅
+  - [x] 9.1 Configure deployment for Render hosting platform
+  - [x] 9.2 Set up environment variables and configuration
+  - [x] 9.3 Deploy backend API to Render staging environment
+  - [x] 9.4 Deploy frontend to Render staging environment
+  - [ ] 9.5 Verify API integration and proxy functionality
+  - [ ] 9.6 Test responsive design and mobile functionality
+  - [ ] 9.7 Test image caching and loading performance
+  - [ ] 9.8 **Staging Environment Optimization Tasks:**
+    - [ ] 9.8.1 Fix remaining Jest test failures (useCardAutocomplete, EditableCardName components)
+    - [ ] 9.8.2 Optimize database update script memory usage for Render constraints
+    - [ ] 9.8.3 Implement comprehensive error handling and user feedback
+    - [ ] 9.8.4 Add staging-specific monitoring and logging
+    - [ ] 9.8.5 Performance testing and optimization for staging environment
+    - [ ] 9.8.6 User acceptance testing with real users in staging
+    - [ ] 9.8.7 Security audit and vulnerability assessment
+    - [ ] 9.8.8 Load testing and scalability validation
+    - [ ] 9.8.9 Documentation and runbooks for staging operations
 
 - [ ] 10.0 Post-MVP Improvements and Cleanup
   - [ ] 10.1 Remove frontend cache monitoring (move to admin page with OAuth)
@@ -245,16 +250,44 @@
     - [ ] 10.10.3.1 frontend documentation consolidated
     - [ ] 10.10.3.2 backend documentation consolidated
 
-- [ ] 10.11 **Comprehensive Logging, Monitoring, and Metrics Collection**
-  - [ ] 10.11.1 **Real Memory Usage Monitoring**: Implement browser performance.memory API integration for accurate heap usage tracking
-  - [ ] 10.11.2 **Performance Metrics Collection**: Add render performance, component lifecycle, and API response time tracking
-  - [ ] 10.11.3 **Error Tracking and Reporting**: Implement centralized error logging with crash reporting and error aggregation
-  - [ ] 10.11.4 **User Analytics**: Track usage patterns, performance bottlenecks, and user experience metrics
-  - [ ] 10.11.5 **Application Performance Monitoring (APM)**: Integrate with tools like Sentry, LogRocket, or custom APM solution
-  - [ ] 10.11.6 **Real-time Dashboard**: Create admin dashboard for monitoring application health, performance, and user metrics
-  - [ ] 10.11.7 **Alerting System**: Set up automated alerts for performance degradation, error spikes, and memory issues
-  - [ ] 10.11.8 **Data Retention and Privacy**: Implement GDPR-compliant data retention policies and user privacy controls
-  - [ ] 10.11.9 **Performance Budgets**: Establish and enforce performance budgets for core web vitals and user experience metrics
+- [ ] 10.11 **Production Environment Creation (Real MVP Launch)**
+  - [ ] 10.11.1 **Production Setup (Minimal)**
+    - [ ] 10.11.1.1 **Upgrade Render Services**: Move from free tier to starter/standard tier for better performance
+    - [ ] 10.11.1.2 **Custom Domain**: Set up a custom domain (optional, but nice to have)
+    - [ ] 10.11.1.3 **Environment Variables**: Copy staging config to production with production URLs
+  
+  - [ ] 10.11.2 **Basic Production Monitoring**
+    - [ ] 10.11.2.1 **Error Tracking**: Add basic error logging (console + simple file logging)
+    - [ ] 10.11.2.2 **Health Checks**: Add simple health check endpoint
+    - [ ] 10.11.2.3 **Basic Metrics**: Track basic usage stats (page views, API calls)
+  
+  - [ ] 10.11.3 **Production Launch**
+    - [ ] 10.11.3.1 **Deploy to Production**: Deploy the working staging version to production
+    - [ ] 10.11.3.2 **Test Production**: Verify everything works in production environment
+    - [ ] 10.11.3.3 **Share with Friends**: Get initial user feedback from friends/family
+    - [ ] 10.11.3.4 **Monitor for Issues**: Keep an eye on logs for the first few days
+
+- [ ] 10.12 **Comprehensive Logging, Monitoring, and Metrics Collection**
+    - [ ] 10.12.1 **Real Memory Usage Monitoring**: Implement browser performance.memory API integration for accurate heap usage tracking
+    - [ ] 10.12.2 **Performance Metrics Collection**: Add render performance, component lifecycle, and API response time tracking
+    - [ ] 10.12.3 **Error Tracking and Reporting**: Implement centralized error logging with crash reporting and error aggregation
+    - [ ] 10.12.4 **User Analytics**: Track usage patterns, performance bottlenecks, and user experience metrics
+    - [ ] 10.12.5 **Application Performance Monitoring (APM)**: Integrate with tools like Sentry, LogRocket, or custom APM solution
+    - [ ] 10.12.6 **Real-time Dashboard**: Create admin dashboard for monitoring application health, performance, and user metrics
+    - [ ] 10.12.7 **Alerting System**: Set up automated alerts for performance degradation, error spikes, and memory issues
+    - [ ] 10.12.8 **Data Retention and Privacy**: Implement GDPR-compliant data retention policies and user privacy controls
+    - [ ] 10.12.9 **Performance Budgets**: Establish and enforce performance budgets for core web vitals and user experience metrics
+
+- [ ] 10.13 **Database Update Script Optimization**
+  - [ ] 10.13.1 **Memory Usage Analysis**: Profile pullBulkData script to identify memory bottlenecks and excessive allocations
+  - [ ] 10.13.2 **Streaming Implementation**: Refactor to use streaming for large data downloads instead of loading entire datasets into memory
+  - [ ] 10.13.3 **Batch Processing**: Implement chunked processing of card data to limit memory usage during updates
+  - [ ] 10.13.4 **Memory Monitoring**: Add real-time memory usage tracking and automatic cleanup during bulk operations
+  - [ ] 10.13.5 **Resource Management**: Implement proper cleanup of temporary objects and database connections
+  - [ ] 10.13.6 **Startup Integration**: Re-enable database updates during startup once memory usage is optimized
+  - [ ] 10.13.7 **Fallback Strategy**: Create graceful fallback when memory constraints are reached
+  - [ ] 10.13.8 **Performance Testing**: Benchmark memory usage and optimize for Render's free tier constraints
+  - [ ] 10.13.9 **Documentation**: Document memory optimization techniques and best practices for future development
 
 - [ ] 11.0 Enhanced Card List Generation and Import Features
   - [ ] 11.2 **Import URL Generation for Popular Deckbuilding Websites**
