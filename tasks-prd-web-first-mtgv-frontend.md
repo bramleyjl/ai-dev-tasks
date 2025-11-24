@@ -202,10 +202,11 @@
   - [x] 9.2 Set up environment variables and configuration
   - [x] 9.3 Deploy backend API to Render staging environment
   - [x] 9.4 Deploy frontend to Render staging environment
-  - [ ] 9.5 Verify API integration and proxy functionality
+  - [x] 9.5 Verify API integration and proxy functionality
   - [ ] 9.6 Test responsive design and mobile functionality
   - [ ] 9.7 Test image caching and loading performance
   - [ ] 9.8 **Staging Environment Optimization Tasks:**
+    - [ ] 9.8.1.0 daily cron job for updating render environment card databases (staging, production)
     - [ ] 9.8.1 Fix remaining Jest test failures (useCardAutocomplete, EditableCardName components)
     - [ ] 9.8.2 Optimize database update script memory usage for Render constraints
     - [ ] 9.8.3 Implement comprehensive error handling and user feedback
