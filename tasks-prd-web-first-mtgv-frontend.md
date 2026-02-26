@@ -3,18 +3,21 @@
 ## Design Pattern: Real-Time Package State Management
 
 ### Architecture Overview
+
 - **Backend as Source of Truth**: All persistent package state managed by API
 - **WebSocket Real-Time Sync**: Frontend connects via WebSocket for immediate updates
 - **REST API for Initial Load**: Page reloads restore state from REST endpoints
 - **Debounced Updates**: Prevent excessive WebSocket traffic during rapid changes
 
 ### State Flow
+
 1. User creates/modifies card list → WebSocket syncs to backend
-2. User selects card versions → WebSocket syncs selections to backend  
+2. User selects card versions → WebSocket syncs selections to backend
 3. User exports → REST API call (doesn't finalize package)
 4. Page reload → REST API loads current state, WebSocket reconnects
 
 ### WebSocket Events
+
 - `join-package`: Client joins package room for real-time updates
 - `update-card-list`: Sync card list changes to backend
 - `update-version-selection`: Sync version selection changes to backend
@@ -22,6 +25,7 @@
 - `version-selection-updated`: Broadcast version selection changes to all clients
 
 ## Relevant Files
+
 - `mtgv-web/next.config.js` - Next.js configuration for image optimization and API routes
 - `mtgv-web/tsconfig.json` - TypeScript configuration
 - `mtgv-web/tailwind.config.js` - Tailwind CSS configuration for responsive design
@@ -206,18 +210,18 @@
   - [ ] 9.6 Test responsive design and mobile functionality
   - [ ] 9.7 Test image caching and loading performance
   - [ ] 9.8 **Staging Environment Optimization Tasks:**
-    - [ ] 9.8.1.0 daily cron job for updating render environment card databases (staging, production)
-    - [ ] 9.8.1 Fix remaining Jest test failures (useCardAutocomplete, EditableCardName components)
-    - [ ] 9.8.2 Optimize database update script memory usage for Render constraints
-    - [ ] 9.8.3 Implement comprehensive error handling and user feedback
-    - [ ] 9.8.4 Add staging-specific monitoring and logging
+    - [x] 9.8.1.0 daily cron job for updating render environment card database
+    - [x] 9.8.1 Fix remaining Jest test failures (useCardAutocomplete, EditableCardName components)
+    - [x] 9.8.2 Optimize database update script memory usage for Render constraints
+    - [x] 9.8.3 Implement comprehensive error handling and user feedback (middleware complete, frontend docs created)
+    - [x] 9.8.4 Add staging-specific monitoring and logging (request logging, performance monitoring, metrics endpoint)
     - [ ] 9.8.5 Performance testing and optimization for staging environment
     - [ ] 9.8.6 User acceptance testing with real users in staging
-    - [ ] 9.8.7 Security audit and vulnerability assessment
+    - [x] 9.8.7 Security audit and vulnerability assessment (comprehensive audit complete, fixes in progress - see `ai-dev-tasks/docs/SECURITY_AUDIT.md`)
     - [ ] 9.8.8 Load testing and scalability validation
-    - [ ] 9.8.9 Documentation and runbooks for staging operations
+    - [x] 9.8.9 Documentation and runbooks for staging operations
 
-- [ ] 10.0 Post-MVP Improvements and Cleanup
+- [ ] 10.0 **Post-MVP Improvements and Cleanup**
   - [ ] 10.1 Remove frontend cache monitoring (move to admin page with OAuth)
   - [ ] 10.2 Fix card sorting issues (especially most & least expensive)
   - [ ] 10.3 Document current caching behavior and state flow
@@ -251,33 +255,75 @@
     - [ ] 10.10.3.1 frontend documentation consolidated
     - [ ] 10.10.3.2 backend documentation consolidated
 
-- [ ] 10.11 **Production Environment Creation (Real MVP Launch)**
-  - [ ] 10.11.1 **Production Setup (Minimal)**
-    - [ ] 10.11.1.1 **Upgrade Render Services**: Move from free tier to starter/standard tier for better performance
-    - [ ] 10.11.1.2 **Custom Domain**: Set up a custom domain (optional, but nice to have)
-    - [ ] 10.11.1.3 **Environment Variables**: Copy staging config to production with production URLs
-  
-  - [ ] 10.11.2 **Basic Production Monitoring**
-    - [ ] 10.11.2.1 **Error Tracking**: Add basic error logging (console + simple file logging)
-    - [ ] 10.11.2.2 **Health Checks**: Add simple health check endpoint
-    - [ ] 10.11.2.3 **Basic Metrics**: Track basic usage stats (page views, API calls)
-  
-  - [ ] 10.11.3 **Production Launch**
-    - [ ] 10.11.3.1 **Deploy to Production**: Deploy the working staging version to production
-    - [ ] 10.11.3.2 **Test Production**: Verify everything works in production environment
-    - [ ] 10.11.3.3 **Share with Friends**: Get initial user feedback from friends/family
-    - [ ] 10.11.3.4 **Monitor for Issues**: Keep an eye on logs for the first few days
+- [ ] 10.11 **Environment Infrastructure Upgrade (Staging & Production)**
+  > **Note**: See `ai-dev-tasks/docs/HOSTING_MONITORING_PLAN.md` for detailed cost analysis and recommendations
+
+  - [ ] 10.11.1 **Hosting & Monitoring Analysis**
+    - [ ] 10.11.1.1 Review hosting options (Render, Vercel, Fly.io, Railway, DigitalOcean) - see HOSTING_MONITORING_PLAN.md
+    - [ ] 10.11.1.2 Analyze monitoring/observability tools (Sentry, UptimeRobot, New Relic, Datadog, Better Stack) - see HOSTING_MONITORING_PLAN.md
+    - [ ] 10.11.1.3 **Select identical products for both staging and production** (same hosting, monitoring, database providers)
+    - [ ] 10.11.1.4 Document final selection with cost breakdown for staging tier vs production tier
+    - [ ] 10.11.1.5 Create deployment checklist and migration plan
+
+  - [ ] 10.11.2 **Free Monitoring Setup (Staging & Production)**
+    - [ ] 10.11.2.1 Set up Sentry error tracking (FREE tier - 5k errors/month) for both environments
+    - [ ] 10.11.2.2 Configure UptimeRobot health monitoring (FREE tier - 50 monitors) for both environments
+    - [ ] 10.11.2.3 Add Cloudflare CDN/DDoS protection (FREE tier) in front of both environments
+    - [ ] 10.11.2.4 Implement structured logging with correlation IDs (backend already has this)
+    - [ ] 10.11.2.5 Add Next.js Image onError monitoring for Scryfall load failures
+    - [ ] 10.11.2.6 Document cache hit rates and performance metrics
+
+  - [ ] 10.11.3 **Staging Environment Upgrade**
+    - [ ] 10.11.3.1 Back up current Render staging configuration and environment variables
+    - [ ] 10.11.3.2 Migrate frontend to selected hosting provider (hobby/starter tier ~$7-20/month)
+    - [ ] 10.11.3.3 Migrate backend to selected hosting provider (hobby/starter tier ~$7-25/month)
+    - [ ] 10.11.3.4 Set up persistent Redis cache (if moving off Render - Upstash hobby ~$10/month)
+    - [ ] 10.11.3.5 Configure MongoDB connection (keep M0 free or upgrade to M2/M5 ~$9-25/month)
+    - [ ] 10.11.3.6 Update environment variables for new hosting provider
+    - [ ] 10.11.3.7 Configure custom domain for staging (optional - e.g., staging.mtgv.app)
+    - [ ] 10.11.3.8 Set up CI/CD auto-deployment from GitHub (staging branch)
+    - [ ] 10.11.3.9 Test all functionality on upgraded staging environment
+
+  - [ ] 10.11.4 **Production Environment Creation**
+    - [ ] 10.11.4.1 Create production instances on same hosting provider as staging (production tier)
+    - [ ] 10.11.4.2 Configure frontend production deployment (production tier ~$20-50/month)
+    - [ ] 10.11.4.3 Configure backend production deployment (production tier ~$25-100/month)
+    - [ ] 10.11.4.4 Set up production MongoDB instance with backups (M10+ tier ~$57/month minimum)
+    - [ ] 10.11.4.5 Set up production Redis cache with persistence (production tier ~$10-15/month)
+    - [ ] 10.11.4.6 Configure production environment variables (separate from staging)
+    - [ ] 10.11.4.7 Set up custom domain for production (e.g., mtgv.app or <www.mtgv.app>)
+    - [ ] 10.11.4.8 Configure SSL certificates (should be automatic with hosting provider)
+    - [ ] 10.11.4.9 Set up CI/CD auto-deployment from GitHub (main/production branch)
+
+  - [ ] 10.11.5 **Production Monitoring & Observability**
+    - [ ] 10.11.5.1 Upgrade Sentry to paid tier if needed (Professional $26/month for 50k errors)
+    - [ ] 10.11.5.2 Add log aggregation service (Better Stack $10-20/month or equivalent)
+    - [ ] 10.11.5.3 Set up APM if budget allows (New Relic/Datadog ~$15-99/month)
+    - [ ] 10.11.5.4 Configure alerting rules for critical errors, downtime, slow response times
+    - [ ] 10.11.5.5 Set up PagerDuty or equivalent for on-call alerts (optional - $19/month)
+    - [ ] 10.11.5.6 Create monitoring dashboard for key metrics (request rates, error rates, response times)
+    - [ ] 10.11.5.7 Document monitoring runbook and alert response procedures
+
+  - [ ] 10.11.6 **Production Launch & Validation**
+    - [ ] 10.11.6.1 Deploy application code to production environment
+    - [ ] 10.11.6.2 Run smoke tests on production (health checks, API endpoints, image loading)
+    - [ ] 10.11.6.3 Verify monitoring and error tracking are working
+    - [ ] 10.11.6.4 Test with sample Commander deck (80+ cards) for performance validation
+    - [ ] 10.11.6.5 Share with friends/family for initial user feedback
+    - [ ] 10.11.6.6 Monitor logs and metrics for first 48-72 hours
+    - [ ] 10.11.6.7 Address any critical issues discovered during initial usage
+    - [ ] 10.11.6.8 Document final production architecture and costs
 
 - [ ] 10.12 **Comprehensive Logging, Monitoring, and Metrics Collection**
-    - [ ] 10.12.1 **Real Memory Usage Monitoring**: Implement browser performance.memory API integration for accurate heap usage tracking
-    - [ ] 10.12.2 **Performance Metrics Collection**: Add render performance, component lifecycle, and API response time tracking
-    - [ ] 10.12.3 **Error Tracking and Reporting**: Implement centralized error logging with crash reporting and error aggregation
-    - [ ] 10.12.4 **User Analytics**: Track usage patterns, performance bottlenecks, and user experience metrics
-    - [ ] 10.12.5 **Application Performance Monitoring (APM)**: Integrate with tools like Sentry, LogRocket, or custom APM solution
-    - [ ] 10.12.6 **Real-time Dashboard**: Create admin dashboard for monitoring application health, performance, and user metrics
-    - [ ] 10.12.7 **Alerting System**: Set up automated alerts for performance degradation, error spikes, and memory issues
-    - [ ] 10.12.8 **Data Retention and Privacy**: Implement GDPR-compliant data retention policies and user privacy controls
-    - [ ] 10.12.9 **Performance Budgets**: Establish and enforce performance budgets for core web vitals and user experience metrics
+  - [ ] 10.12.1 **Real Memory Usage Monitoring**: Implement browser performance.memory API integration for accurate heap usage tracking
+  - [ ] 10.12.2 **Performance Metrics Collection**: Add render performance, component lifecycle, and API response time tracking
+  - [ ] 10.12.3 **Error Tracking and Reporting**: Implement centralized error logging with crash reporting and error aggregation
+  - [ ] 10.12.4 **User Analytics**: Track usage patterns, performance bottlenecks, and user experience metrics
+  - [ ] 10.12.5 **Application Performance Monitoring (APM)**: Integrate with tools like Sentry, LogRocket, or custom APM solution
+  - [ ] 10.12.6 **Real-time Dashboard**: Create admin dashboard for monitoring application health, performance, and user metrics
+  - [ ] 10.12.7 **Alerting System**: Set up automated alerts for performance degradation, error spikes, and memory issues
+  - [ ] 10.12.8 **Data Retention and Privacy**: Implement GDPR-compliant data retention policies and user privacy controls
+  - [ ] 10.12.9 **Performance Budgets**: Establish and enforce performance budgets for core web vitals and user experience metrics
 
 - [ ] 10.13 **Database Update Script Optimization**
   - [ ] 10.13.1 **Memory Usage Analysis**: Profile pullBulkData script to identify memory bottlenecks and excessive allocations
@@ -289,6 +335,50 @@
   - [ ] 10.13.7 **Fallback Strategy**: Create graceful fallback when memory constraints are reached
   - [ ] 10.13.8 **Performance Testing**: Benchmark memory usage and optimize for Render's free tier constraints
   - [ ] 10.13.9 **Documentation**: Document memory optimization techniques and best practices for future development
+- [ ] 10.14 **Production Security Hardening & Maintenance**
+
+  > **Note**: See `ai-dev-tasks/docs/SECURITY_AUDIT.md` for comprehensive security audit findings and recommendations
+  >
+  > **Authentication Scope**: App designed for anonymous usage with ephemeral card list caching only. No user accounts, authentication, or persistent user data storage required.
+
+  - [ ] 10.14.1 **Immediate Security Fixes (Critical - Week 1)**
+    - [ ] 10.14.1.1 Deploy CORS whitelist configuration (already implemented in middleware/security.js)
+    - [ ] 10.14.1.2 Fix npm vulnerabilities - run `npm audit fix` on both frontend and backend
+    - [ ] 10.14.1.3 Add request size limits to body-parser (prevent DoS via large payloads)
+    - [ ] 10.14.1.4 Add WebSocket message validation and rate limiting
+
+  - [ ] 10.14.2 **Short-Term Security Enhancements (High Priority - Weeks 2-3)**
+    - [ ] 10.14.2.1 Implement distributed rate limiting with Redis (multi-instance support)
+    - [ ] 10.14.2.2 Add WebSocket authentication (token-based connection validation)
+    - [ ] 10.14.2.3 Set up Sentry for comprehensive error tracking and security monitoring
+    - [ ] 10.14.2.4 Implement API versioning (e.g., /v1/card_package)
+    - [ ] 10.14.2.5 Add security event logging (rate limit violations, suspicious patterns)
+
+  - [ ] 10.14.3 **Production Database Security (Before Real Launch)**
+    - [ ] 10.14.3.1 Upgrade MongoDB from M0 to M10+ for encryption at rest and automated backups
+    - [ ] 10.14.3.2 Configure MongoDB IP whitelist for additional network security
+    - [ ] 10.14.3.3 Enable MongoDB audit logging for security event tracking
+    - [ ] 10.14.3.4 Create separate database users for different environments
+    - [ ] 10.14.3.5 Implement and test backup/restore procedures
+    - [ ] 10.14.3.6 Set up MongoDB performance monitoring
+
+  - [ ] 10.14.4 **Ongoing Security Maintenance (Monthly/Quarterly)**
+    - [ ] 10.14.4.1 Regular npm dependency updates and vulnerability scanning
+    - [ ] 10.14.4.2 Monthly security log review and incident analysis
+    - [ ] 10.14.4.3 Quarterly security audit and penetration testing
+    - [ ] 10.14.4.4 Review and rotate secrets/credentials (MongoDB passwords, API keys)
+    - [ ] 10.14.4.5 Monitor SSL/TLS certificate expirations and renewals
+    - [ ] 10.14.4.6 Update security headers and CSP policies as needed
+
+- [ ] 10.15 **Frontend Error Handling Enhancement** (After React/Next.js Learning)
+
+  > **Note**: See `ai-dev-tasks/docs/FRONTEND_ERROR_HANDLING_ESSENTIAL.md` for implementation details. To be completed after gaining more experience with React/Next.js patterns.
+
+  - [ ] 10.15.1 **Standardized Error Classes**: Create MTGVAPIError class with user-friendly message mapping
+  - [ ] 10.15.2 **Retry Mechanism**: Add automatic retry utility for transient failures (network errors, 5xx responses)
+  - [ ] 10.15.3 **Error Boundary**: Create React ErrorBoundary component to prevent full app crashes
+  - [ ] 10.15.4 **Enhanced ErrorDisplay**: Update ErrorDisplay component with user-friendly messages and retry button
+  - [ ] 10.15.5 **Testing**: Test error scenarios (network failure, server errors, validation errors, component crashes)
 
 - [ ] 11.0 Enhanced Card List Generation and Import Features
   - [ ] 11.2 **Import URL Generation for Popular Deckbuilding Websites**
@@ -336,3 +426,29 @@
     - [ ] 11.6.5 Add performance testing for large deck lists
     - [ ] 11.6.6 Create accessibility testing for new UI components
     - [ ] 11.6.7 Document error handling and troubleshooting guides
+
+- [ ] 12.0 React/Next.js Frontend Deep Dive (Post-MVP Learning)
+  - [ ] 12.1 **Core React Patterns**
+    - [ ] 12.1.1 Study useState vs useRef and stale closures (document useCardPackage lessons learned)
+    - [ ] 12.1.2 Master useEffect dependencies and cleanup patterns
+    - [ ] 12.1.3 Understand component lifecycle: mounting vs re-rendering vs remounting
+    - [ ] 12.1.4 Learn useCallback/useMemo for performance optimization
+  - [ ] 12.2 **WebSocket Integration in React**
+    - [ ] 12.2.1 WebSocket lifecycle: connection management, event handlers, avoiding stale closures
+    - [ ] 12.2.2 State synchronization patterns: keeping UI in sync with real-time messages
+    - [ ] 12.2.3 Race condition handling and debouncing strategies
+  - [ ] 12.3 **Next.js App Router Essentials**
+    - [ ] 12.3.1 Server vs Client Components and data fetching patterns (SSR, SSG, ISR)
+    - [ ] 12.3.2 Caching strategies and route handlers
+    - [ ] 12.3.3 Image optimization and middleware patterns
+  - [ ] 12.4 **Custom Hooks & TypeScript**
+    - [ ] 12.4.1 Hook composition and return patterns
+    - [ ] 12.4.2 Proper typing for hooks: useState, useRef, generic types
+    - [ ] 12.4.3 Hook testing strategies and best practices
+  - [ ] 12.5 **Performance & Common Pitfalls**
+    - [ ] 12.5.1 React.memo, code splitting, bundle optimization
+    - [ ] 12.5.2 Memory leaks: event listeners, subscriptions, cleanup
+    - [ ] 12.5.3 Infinite loops and state batching patterns
+  - [ ] 12.6 **Documentation & Application**
+    - [ ] 12.6.1 Create internal pattern library with examples from this project
+    - [ ] 12.6.2 Establish team coding guidelines and code review checklist
